@@ -17,7 +17,6 @@ function M.get_lines_until_cursor()
 end
 
 function M.get_visual_selection()
-  print("Hi!!")
   local _, srow, scol = unpack(vim.fn.getpos 'v')
   local _, erow, ecol = unpack(vim.fn.getpos '.')
 
