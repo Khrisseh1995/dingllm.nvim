@@ -17,6 +17,7 @@ function M.get_lines_until_cursor()
 end
 
 function M.get_visual_selection()
+  print("Hi!!")
   local _, srow, scol = unpack(vim.fn.getpos 'v')
   local _, erow, ecol = unpack(vim.fn.getpos '.')
 
@@ -45,7 +46,8 @@ function M.get_visual_selection()
       scol, ecol = ecol, scol
     end
     for i = srow, erow do
-      table.insert(lines, vim.api.nvim_buf_get_text(0, i - 1, math.min(scol - 1, ecol), i - 1, math.max(scol - 1, ecol), {})[1])
+      table.insert(lines,
+        vim.api.nvim_buf_get_text(0, i - 1, math.min(scol - 1, ecol), i - 1, math.max(scol - 1, ecol), {})[1])
     end
     return lines
   end
@@ -154,7 +156,8 @@ local active_job = nil
 function M.invoke_llm_and_stream_into_editor(opts, make_curl_args_fn, handle_data_fn)
   vim.api.nvim_clear_autocmds { group = group }
   local prompt = get_prompt(opts)
-  local system_prompt = opts.system_prompt or 'You are a tsundere uwu anime. Yell at me for not setting my configuration for my llm plugin correctly'
+  local system_prompt = opts.system_prompt or
+  'You are a tsundere uwu anime. Yell at me for not setting my configuration for my llm plugin correctly'
   local args = make_curl_args_fn(opts, prompt, system_prompt)
   local curr_event_state = nil
 
