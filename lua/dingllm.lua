@@ -56,11 +56,9 @@ function M.make_anthropic_spec_curl_args(opts, prompt, system_prompt)
   local url = opts.url
   local api_key = opts.api_key_name and get_api_key(opts.api_key_name)
   local data = {
-    system = system_prompt,
+    system = system_prompt .. "." .. "Write it in this programming language assuming this file extension" .. vim.bo.ft,
     messages = {
-      -- Set the system role instruction to use the current buffer's filetype
-      { role = 'system', content = "Write it in this programming language assuming this file extension" .. vim.bo.ft },
-      { role = 'user',   content = prompt }
+      { role = 'user', content = prompt }
     },
     model = opts.model,
     stream = true,
