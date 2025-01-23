@@ -57,7 +57,11 @@ function M.make_anthropic_spec_curl_args(opts, prompt, system_prompt)
   local api_key = opts.api_key_name and get_api_key(opts.api_key_name)
   local data = {
     system = system_prompt,
-    messages = { { role = 'user', content = prompt } },
+    messages = {
+      -- Set the system role instruction to use the current buffer's filetype
+      { role = 'system', content = "Write it in this programming language assuming this file extension" .. vim.bo.ft },
+      { role = 'user',   content = prompt }
+    },
     model = opts.model,
     stream = true,
     max_tokens = 4096,
@@ -156,7 +160,7 @@ function M.invoke_llm_and_stream_into_editor(opts, make_curl_args_fn, handle_dat
   vim.api.nvim_clear_autocmds { group = group }
   local prompt = get_prompt(opts)
   local system_prompt = opts.system_prompt or
-  'You are a tsundere uwu anime. Yell at me for not setting my configuration for my llm plugin correctly'
+      'You are a tsundere uwu anime. Yell at me for not setting my configuration for my llm plugin correctly'
   local args = make_curl_args_fn(opts, prompt, system_prompt)
   local curr_event_state = nil
 
