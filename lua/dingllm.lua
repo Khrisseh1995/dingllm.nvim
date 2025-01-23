@@ -56,7 +56,8 @@ function M.make_anthropic_spec_curl_args(opts, prompt, system_prompt)
   local url = opts.url
   local api_key = opts.api_key_name and get_api_key(opts.api_key_name)
   local data = {
-    system = system_prompt,
+    system = system_prompt ..
+        " Output only valid " .. vim.bo.filetype .. " code. Do not include backticks or language identifiers.",
     messages = {
       { role = 'user', content = prompt }
     },
